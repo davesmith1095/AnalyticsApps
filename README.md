@@ -4,7 +4,7 @@ Analytics Applications Spring 26 Group Project
 # Analytics Applications — SP26: MO 2020 Election Analysis (Group 1)
 
 ## Project Overview
-This project aims to analyze the distribution of voting resources across Missouri during the 2020 election. By combining precinct-level election results, polling locations, demographic/socioeconomic census data, and geographic boundaries, we are conducting a predictive and prescriptive analysis. Our ultimate goal is to provide data-driven recommendations for state government officials on where to allocate voting resources to reduce voter disenfranchisement.
+This project aims to analyze the distribution of voting resources across Missouri during presidential elections from 2016-2024. By combining precinct-level election results, polling locations, demographic/socioeconomic census data, and geographic boundaries, we are conducting a predictive and prescriptive analysis. Our ultimate goal is to provide data-driven recommendations for state government officials on where to allocate voting resources to reduce voter disenfranchisement.
 
 ## Repository Structure
 To prevent merge conflicts and keep our work organized, please adhere to the following directory structure. 
