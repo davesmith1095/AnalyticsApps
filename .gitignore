@@ -1,0 +1,4 @@
+## Add any file extensions or specific files to ignore from github here
+
+data/
+logs/
