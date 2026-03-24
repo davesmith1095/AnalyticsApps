@@ -18,11 +18,14 @@ mo-election-analysis/
 ├── data/                           # GITIGNORED (Do not push to GitHub)
 │   ├── raw/                        # Extract the Canvas data zip here
 │   └── processed/                  # Store cleaned dataframe outputs here
+│   └── geo                         # Geospatial data subfolder
+│        ├── raw/                        # Extract GEO Canvas data zips here
+│        └── processed/                  # Store cleaned geodataframe outputs here
 ├── notebooks/
-│   ├── 01_initial_cleaning_eda.ipynb   # Initial data cleaning
-│   ├── 02_metric_selection.ipynb       # Defining our 3-5 key metrics
-│   ├── 03_turnout_analysis.ipynb       # EDA for Metric 1
-│   └── 04_demographic_analysis.ipynb   # EDA for Metric 2
+│   ├── Group 1 Final Project - MO Voter.ipynb   # Initial Data Cleaning and EDA
+│   ├── ge.ipynb                                 # Initial geospatial data compliation, cleanup, review
+│   ├── geoeda2.ipynb                            # Geospatial analysis 
+│   └── ??TBD                                    # Combined Geospatial data/viz
 ├── src/                            # Reusable Python scripts and helper functions
 └── docs/
     └── Group1_ProjectProposal.docx
