@@ -1,2 +1,9 @@
+
+## Add any file extensions or specific files to ignore from github here
+
 Data/
+data/
+logs/
+docs/
 .DS_Store
+
