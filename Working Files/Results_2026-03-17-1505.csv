@@ -1,0 +1,6 @@
+created_on,name,is_default,is_current,origin,owner,comment,options,retention_time,kind,owner_role_type,object_visibility,data_quality_monitoring_settings
+2026-03-14 07:54:57.144 -0700,SNOWFLAKE,N,N,SNOWFLAKE.ACCOUNT_USAGE,,,,0,APPLICATION,,,
+2026-03-14 07:55:01.974 -0700,SNOWFLAKE_LEARNING_DB,N,N,,ACCOUNTADMIN,Created by Snowflake during account provisioning,,1,STANDARD,ROLE,,
+2026-03-14 07:55:00.669 -0700,SNOWFLAKE_SAMPLE_DATA,N,N,SFSALESSHARED.SFC_SAMPLES_AWSUSEAST2.SAMPLE_DATA,ACCOUNTADMIN,Preloaded TPCH Data provided by Snowflake during account provisioning,,0,IMPORTED DATABASE,ROLE,,
+2026-03-14 08:11:03.278 -0700,USER$5576GROUP1,N,N,,,,,1,PERSONAL DATABASE,,,
+2026-03-14 08:08:53.202 -0700,VOTER_PROJECT_DB,N,N,,ACCOUNTADMIN,,,1,STANDARD,ROLE,,
