@@ -1,0 +1,4 @@
+﻿,name,type,category,enabled,comment,created_on
+0,AnalyticsApps,EXTERNAL_API,API,true,,2026-03-17T16:20:13.687Z
+1,GITHUB_API,EXTERNAL_API,API,true,,2026-03-17T16:18:58.768Z
+2,SNOWFLAKE$LOCAL_APPLICATION,OAUTH - LOCAL_APPLICATION,SECURITY,true,https://docs.snowflake.com/user-guide/oauth-local-application,2026-03-14T14:54:56.804Z

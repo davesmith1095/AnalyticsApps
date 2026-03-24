@@ -1,0 +1,274 @@
+﻿,key,value,default,level,description,type
+0,ABORT_DETACHED_QUERY,false,false,,"If true, Snowflake will automatically abort queries when it detects that the client has disappeared.",BOOLEAN
+1,ACCOUNT_LEVEL_FILE_EXTENSIONS_ALLOW_LIST_FOR_PRIVATE_WORKSPACES,,,,"File extensions that are allowed in private workspaces for the account, the parameter is in format: '.ext1, .ext2, .ext3', if the parameter is empty, it means all extensions are allowed",STRING
+2,ACCOUNT_LEVEL_FILE_EXTENSIONS_ALLOW_LIST_FOR_SHARED_WORKSPACES,,,,"File extensions that are allowed in shared workspaces for the account, the parameter is in format: '.ext1, .ext2, .ext3', if the parameter is empty, it means all extensions are allowed",STRING
+3,ACTIVE_PYTHON_PROFILER,,,,"Which profiler is currently active to analyze user code for Python sprocs. Possible values are ""LINE"" and ""MEMORY"".",STRING
+4,AI_SQL_ERROR_HANDLING_USE_FAIL_ON_ERROR,true,true,,"When enabled, old fail on error behavior will be observed",BOOLEAN
+5,ALLOWED_SPCS_WORKLOAD_TYPES,ALL,ALL,,"Comma separated list of allowed workload types on SPCS. Valid workload types are as follows: ALL, USER, NOTEBOOK, MODEL_SERVING, STREAMLIT, ML_JOB",STRING
+6,ALLOW_BIND_VALUES_ACCESS,true,true,,"Allow any form of bind value access to users. This parameter should be set to false at the ACCOUNT level for customers who want to disable bind value access altogether. Each access path (e.g., BIND_VALUE table function, QUERY_HISTORY, etc.) also has its own parameter guarding access (these parameters have 'and' semantics: both this parameter and the access-path specific parameter must be enabled in order for a user to get access).",BOOLEAN
+7,ALLOW_CLIENT_MFA_CACHING,false,false,,Allows client to cache MFA Authentication,BOOLEAN
+8,ALLOW_ID_TOKEN,false,false,,Whether the account can have ID Tokens issued,BOOLEAN
+9,ALLOW_ROW_TIMESTAMP,false,false,,"Support row timestamp on table. If set on schema level and higher, the callbacks below will not perform table specific validations and not affect existing tables.  New tables will be created with row timestamp enabled.",BOOLEAN
+10,APPSTREAM_IP_LIST,'54.151.111.109','54.151.111.109',,List of IPs used by Appstream to access customer accounts.,STRING
+11,AUTOCOMMIT,true,true,,"The autocommit property determines whether is statement should to be implicitly
+wrapped within a transaction or not. If autocommit is set to true, then a 
+statement that requires a transaction is executed within a transaction 
+implicitly. If autocommit is off then an explicit commit or rollback is required
+to close a transaction. The default autocommit value is true.",BOOLEAN
+12,AUTOCOMMIT_API_SUPPORTED,true,true,,"Whether autocommit feature is enabled for this client. This parameter is for
+Snowflake use only.",BOOLEAN
+13,BASE_LOCATION_PREFIX,,,,The base location prefix for managed or converted Iceberg table data relative to the Iceberg tables' external volume active storage location,STRING
+14,BINARY_INPUT_FORMAT,HEX,HEX,,input format for binary,STRING
+15,BINARY_OUTPUT_FORMAT,HEX,HEX,,display format for binary,STRING
+16,BUDGETS_DATABASE,,,,Configured value of the database to be used for all budgets purposes for an account.,STRING
+17,CATALOG,,,,Name of the catalog integration to use for iceberg tables,STRING
+18,CATALOG_SYNC,,,,Name of the catalog integration to sync this table,STRING
+19,CLIENT_ENABLE_CONSERVATIVE_MEMORY_USAGE,true,true,,Enables conservative memory usage for JDBC,BOOLEAN
+20,CLIENT_ENABLE_DEFAULT_OVERWRITE_IN_PUT,false,false,,"Set default value of overwrite option to true for put command, if overwrite option is not specified in the sql command.",BOOLEAN
+21,CLIENT_ENABLE_LOG_INFO_STATEMENT_PARAMETERS,false,false,,Enable info-level logging for Prepared Statement binding parameters,BOOLEAN
+22,CLIENT_ENCRYPTION_KEY_SIZE,128,128,,Client-side encryption key size in bits. Either 128 or 256.,NUMBER
+23,CLIENT_MEMORY_LIMIT,1536,1536,,Limit the amount of memory used by the client in MB,NUMBER
+24,CLIENT_METADATA_REQUEST_USE_CONNECTION_CTX,false,false,,"For client metadata request(getTables()), use session catalog and schema if set to true",BOOLEAN
+25,CLIENT_METADATA_USE_SESSION_DATABASE,false,false,,"For client metadata request(getTables()), use session catalog but multiple schemas if set to true (in conjunction with CLIENT_METADATA_REQUEST_USE_CONNECTION_CTX",BOOLEAN
+26,CLIENT_PREFETCH_THREADS,4,4,,"Customer parameter to control threads, 0=auto",NUMBER
+27,CLIENT_RESULT_CHUNK_SIZE,160,160,,Set the max result chunk size in MB on the client side,NUMBER
+28,CLIENT_RESULT_COLUMN_CASE_INSENSITIVE,false,false,,Column name search is case insensitive in clients,BOOLEAN
+29,CLIENT_SESSION_CLONE,false,false,,"If true, client clones a new session from the previously used tokens for the account and user.",BOOLEAN
+30,CLIENT_SESSION_KEEP_ALIVE,false,false,,"If true, client session will not expire automatically",BOOLEAN
+31,CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY,3600,3600,,Heartbeat frequency in seconds for CLIENT_SESSION_KEEP_ALIVE.,NUMBER
+32,CLIENT_TIMESTAMP_TYPE_MAPPING,TIMESTAMP_LTZ,TIMESTAMP_LTZ,,"If a variable is bound to the TIMESTAMP data type using the bind API, determines which TIMESTAMP* type it should map to:
+  TIMESTAMP_LTZ (default), TIMESTAMP_NTZ",STRING
+33,CORTEX_CODE_CLI_DAILY_EST_CREDIT_LIMIT_PER_USER,-1,-1,,Daily estimated credit limit per user for Cortex Code CLI usage. A value of -1 means no limit. A value of 0 disables access.,NUMBER
+34,CORTEX_ENABLED_CROSS_REGION,ANY_REGION,DISABLED,ACCOUNT,Comma separated list of allowed cortex cross regions. Order does not matter.,STRING
+35,CORTEX_MODELS_ALLOWLIST,ALL,ALL,,"Can be ALL, NONE, or a comma separated list of model names",STRING
+36,CSV_TIMESTAMP_FORMAT,,,,"Display format for TIMESTAMP values in Snowsight downloaded CSV files. If empty, TIMESTAMP_LTZ_OUTPUT_FORMAT will be used for TIMESTAMP_LTZ values, TIMESTAMP_TZ_OUTPUT_FORMAT will be used for TIMESTAMP_TZ and TIMESTAMP_NTZ_OUTPUT_FORMAT for TIMESTAMP_NTZ values.",STRING
+37,C_API_QUERY_RESULT_FORMAT,JSON,JSON,,Format used to serialize query result to send back to C API,STRING
+38,DATAFRAME_PROCESSOR_PKG_VERSION,latest,latest,,"The version of the Dataframe processor package. e.g., local means the package is built locally from a stage; latest means use the latest version imported from the Anaconda channel. 0.0.3 means the exact version from the channel.",STRING
+39,DATA_METRIC_SCHEDULE,60 MINUTES,60 MINUTES,,Specify the schedule that data metric functions associated to the table must be executed in order to be used for evaluation.,STRING
+40,DATA_RETENTION_TIME_IN_DAYS,1,1,,number of days to retain the old version of deleted/updated data,NUMBER
+41,DATE_INPUT_FORMAT,AUTO,AUTO,,input format for date,STRING
+42,DATE_OUTPUT_FORMAT,YYYY-MM-DD,YYYY-MM-DD,,display format for date,STRING
+43,DEFAULT_DBT_VERSION,1.9.4,1.9.4,,Default dbt version to use when creating and executing dbt,STRING
+44,DEFAULT_DDL_COLLATION,,,,Collation that is used for all the new columns created by the DDL statements (if not specified),STRING
+45,DEFAULT_NOTEBOOK_COMPUTE_POOL_CPU,SYSTEM_COMPUTE_POOL_CPU,SYSTEM_COMPUTE_POOL_CPU,,The default CPU compute pool used to run Notebooks.,STRING
+46,DEFAULT_NOTEBOOK_COMPUTE_POOL_GPU,SYSTEM_COMPUTE_POOL_GPU,SYSTEM_COMPUTE_POOL_GPU,,The default GPU compute pool used to run Notebooks.,STRING
+47,DEFAULT_NULL_ORDERING,LAST,LAST,,User-visible parameter that allows customizing null ordering:- FIRST: nulls are ordered first in ASC order and last in DESC order- LAST: nulls are ordered last in ASC order and first in ASC order,STRING
+48,DEFAULT_STREAMLIT_NOTEBOOK_WAREHOUSE,SYSTEM$STREAMLIT_NOTEBOOK_WH,SYSTEM$STREAMLIT_NOTEBOOK_WH,,The warehouse to run streamlits/notebooks if the WAREHOUSE property is not explicitly specified on the streamlit/notebook objects,STRING
+49,DISABLE_MFA_ENROLLMENT_PROMPT,true,true,SYSTEM,"When true, users with a local password who are unenrolled with multifactor authentication (MFA) will not receive a dismissable prompt at login to enroll in MFA.",BOOLEAN
+50,DISABLE_SNOWFLAKE_LOCAL_APPLICATION_INTEGRATION,false,false,,"When set, disables the SNOWFLAKE$LOCAL_APPLICATION integration",BOOLEAN
+51,DISABLE_UI_DOWNLOAD_BUTTON,false,false,,Disables the Classic UI download button,BOOLEAN
+52,DISABLE_USER_PRIVILEGE_GRANTS,false,false,,"If true, disallow granting privileges to a user.",BOOLEAN
+53,DISALLOWED_SPCS_WORKLOAD_TYPES,,,,"Comma separated list of disallowed workload types on SPCS. Valid workload types are as follows: ALL, USER, NOTEBOOK, MODEL_SERVING, STREAMLIT, ML_JOB",STRING
+54,DOTNET_QUERY_RESULT_FORMAT,JSON,JSON,,Format used to serialize query result to send back to .NET driver,STRING
+55,DYNAMIC_TABLES_VIEW_VERSION,9,9,,INFORMATION_SCHEMA.DYNAMIC_TABLES view definition version,NUMBER
+56,DYNAMIC_TABLE_GRAPH_HISTORY_VIEW_VERSION,9,9,,INFORMATION_SCHEMA.DYNAMIC_TABLE_GRAPH_HISTORY view definition version,NUMBER
+57,DYNAMIC_TABLE_REFRESH_HISTORY_VIEW_VERSION,12,12,,INFORMATION_SCHEMA.DYNAMIC_TABLE_REFRESH_HISTORY view definition version,NUMBER
+58,ENABLE_AUTOMATIC_SENSITIVE_DATA_CLASSIFICATION_LOG,true,true,,"If true, events from automatic sensitive data classification will get logged in user event table",BOOLEAN
+59,ENABLE_BUDGET_EVENT_LOGGING,true,true,,"When true, enable budget event logging feature",BOOLEAN
+60,ENABLE_CONSOLE_OUTPUT,false,false,,Enable stdout/stderr fast path logging for anonyous stored procs. This is a public parameter (similar to LOG_LEVEL).,BOOLEAN
+61,ENABLE_CORTEX_AGENTS_ANSWERS,false,false,,Is the Cortex Answers feature enabled in Agent API.,BOOLEAN
+62,ENABLE_CORTEX_ANALYST,true,false,SYSTEM,Is Cortex Analyst enabled.,BOOLEAN
+63,ENABLE_CORTEX_ANALYST_MODEL_AZURE_OPENAI,false,false,,Whether to allow models from Azure OpenAI (e.g. GPT-4) when serving Cortex Analyst API requests or to only use Snowflake-hosted models.,BOOLEAN
+64,ENABLE_CORTEX_AUTOMATIC_TABLE_DESCRIPTIONS,true,true,,"When true, enables automatic Cortex-powered table descriptions. Account admins can set this to false to disable the feature for their account.",BOOLEAN
+65,ENABLE_CORTEX_WEBSEARCH,false,false,,Set to true to allow Cortex products to use web search,BOOLEAN
+66,ENABLE_DATA_COMPACTION,true,true,,User-visible parameter that controls table storage optimization for managed Iceberg tables.,BOOLEAN
+67,ENABLE_EGRESS_COST_OPTIMIZER,true,true,,"If true, replication cache will get applied automatically for the account",BOOLEAN
+68,ENABLE_GET_DDL_USE_DATA_TYPE_ALIAS,false,false,,"If true, GET_DDL will return data type alias instead of canonical data type when alias is available",BOOLEAN
+69,ENABLE_ICEBERG_MANAGED_TABLE_REPLICATION,false,false,,Whether to enable iceberg managed tables for replication in Failover group.,BOOLEAN
+70,ENABLE_ICEBERG_MERGE_ON_READ,true,true,,Parameter to enable merge-on-read on an Iceberg table.,BOOLEAN
+71,ENABLE_IDENTIFIER_FIRST_LOGIN,false,false,,Identifier First Flow support,BOOLEAN
+72,ENABLE_INTERNAL_STAGES_PRIVATELINK,false,false,,Enables privatelink access to Snowflake internal stages,BOOLEAN
+73,ENABLE_NOTEBOOK_CREATION_IN_PERSONAL_DB,false,false,SYSTEM,"If enabled, notebook can be created in personal DB",BOOLEAN
+74,ENABLE_PERSONAL_DATABASE,true,true,,Enable Personal Database Feature,BOOLEAN
+75,ENABLE_PROVIDER_LISTING_PROGRAMMATIC_ACCESS_DESCRIBE_LISTING,true,true,,"If true, describe listing returns based on the listing programmatic access design.",BOOLEAN
+76,ENABLE_SELECTIVE_EXTERNAL_VOLUME_REPLICATION_PUPR,false,false,,This parameter enables selective external volume replication PuPr,BOOLEAN
+77,ENABLE_SNOW_API_FOR_COMPUTE_POOL,enable,enable,,Enable compute pool resource,STRING
+78,ENABLE_SNOW_API_FOR_COPILOT,enable,enable,,Enable copilot resource,STRING
+79,ENABLE_SNOW_API_FOR_DATABASE,enable,enable,,Enable database resource,STRING
+80,ENABLE_SNOW_API_FOR_FUNCTION,enable,enable,,Enable function resource,STRING
+81,ENABLE_SNOW_API_FOR_GRANT,enable,enable,,Enable grant resource,STRING
+82,ENABLE_SNOW_API_FOR_ICEBERG,enable,enable,,Enable Iceberg resource,STRING
+83,ENABLE_SNOW_API_FOR_IMAGE_REPOSITORY,enable,enable,,Enable image repository resource,STRING
+84,ENABLE_SNOW_API_FOR_RESULT,enable,enable,,Enable result resource,STRING
+85,ENABLE_SNOW_API_FOR_ROLE,enable,enable,,Enable role resource,STRING
+86,ENABLE_SNOW_API_FOR_SCHEMA,enable,enable,,Enable schema resource,STRING
+87,ENABLE_SNOW_API_FOR_SERVICE,enable,enable,,Enable service resource,STRING
+88,ENABLE_SNOW_API_FOR_SESSION,enable,enable,,Enable session resource,STRING
+89,ENABLE_SNOW_API_FOR_STAGE,enable,enable,,Enable stage resource,STRING
+90,ENABLE_SNOW_API_FOR_TABLE,enable,enable,,Enable table resource,STRING
+91,ENABLE_SNOW_API_FOR_TASK,enable,enable,,Enable task resource,STRING
+92,ENABLE_SNOW_API_FOR_USER,enable,enable,,Enable user resource,STRING
+93,ENABLE_SNOW_API_FOR_WAREHOUSE,enable,enable,,Enable warehouse resource,STRING
+94,ENABLE_SPCS_BLOCK_STORAGE_SNOWFLAKE_FULL_ENCRYPTION_ENFORCEMENT,false,false,,Enable enforcement of SNOWFLAKE_FULL encryption for SPCS block-storage volumes and snapshots.,BOOLEAN
+95,ENABLE_STAGE_S3_PRIVATELINK_FOR_US_EAST_1,false,false,SYSTEM,set to true to generate aws s3 regional URL instead of global s3 urls.,BOOLEAN
+96,ENABLE_STRUCTURED_TYPES_IN_SNOWPARK_CONNECT_RESPONSE,false,false,,"If enabled, it will act as though ENABLE_STRUCTURED_TYPES_IN_CLIENT_RESPONSE and ENABLE_STRUCTURED_TYPES_NATIVE_ARROW_FORMAT are also enabled, bypassing the driver version check. This parameter is temporary and intended solely for use in Snowpark sessions. Note that there is no validation that the request is initiated from Snowpark when this parameter is on",BOOLEAN
+97,ENABLE_STRUCTURED_TYPES_NATIVE_ARROW_FORMAT,false,false,,"If true, in the Arrow ResultSet format, a result column of a structured type would become a column of a corresponding native Arrow structured type (subject to client feature support check). Otherwise, the column would become a string Arrow column that contains JSON representation of its contents. See http://go/structured-types-arrow-resultset .",BOOLEAN
+98,ENABLE_SYSTEM_SET_APP_VERSION_IN_CURRENT_CALL_CONTEXT,false,false,,"If enabled for an app package, allow usage of the system function SYSTEM$SET_APP_VERSION_IN_CURRENT_CALL_CONTEXT in its app code",BOOLEAN
+99,ENABLE_TAG_PROPAGATION_EVENT_LOGGING,false,false,,A public param to enable logging events during automatic tag propagation,BOOLEAN
+100,ENABLE_TRI_SECRET_AND_REKEY_OPT_OUT_FOR_IMAGE_REPOSITORY,true,true,,"If false, image registry creation will fail for accounts who enabled tri-secret or rekey",BOOLEAN
+101,ENABLE_TRI_SECRET_AND_REKEY_OPT_OUT_FOR_SPCS_BLOCK_STORAGE,false,false,SYSTEM,Enables block storage and snapshot support for accounts who have enabled tri secret encryption,BOOLEAN
+102,ENABLE_TRY_CAST_STRUCTURED_TYPES,false,false,,Enable TRY_CAST for variant to structured type conversions,BOOLEAN
+103,ENABLE_UNHANDLED_EXCEPTIONS_REPORTING,true,true,,Enables reporting of unhandled exceptions thrown by UDFs and procedures,BOOLEAN
+104,ENABLE_UNLOAD_PHYSICAL_TYPE_OPTIMIZATION,true,true,,Enable physical-type optimizations used in Snowflake to affect the Parquet output,BOOLEAN
+105,ENABLE_UNREDACTED_QUERY_SYNTAX_ERROR,false,false,,Enable View Malformed SQL Text feature when parse error occurs,BOOLEAN
+106,ENABLE_UNREDACTED_SECURE_OBJECT_ERROR,false,false,,Enable viewing error messages coming from secure objects,BOOLEAN
+107,ENFORCE_NETWORK_RULES_FOR_INTERNAL_STAGES,false,false,,Enable the INTERNAL_STAGE mode for type AwsVpceId and IPv4.,BOOLEAN
+108,ENFORCE_NETWORK_RULES_FOR_INTERNAL_STAGES_ON_USER,false,false,,The user lineage version of the customer facing account parameter ENFORCE_NETWORK_RULES_FOR_INTERNAL_STAGES used by managed policy migration. Users with this parameter enabled will have managed policy enforced on internal stage. We will deprecate it manually after customer migration is finished.,BOOLEAN
+109,ERROR_ON_NONDETERMINISTIC_MERGE,true,true,,raise an error when attempting to merge-update a row that joins many rows,BOOLEAN
+110,ERROR_ON_NONDETERMINISTIC_UPDATE,false,false,,raise an error when attempting to update a row that joins many rows,BOOLEAN
+111,EVENT_TABLE,snowflake.telemetry.events,snowflake.telemetry.events,,Event destination for the given target.,STRING
+112,EXEMPT_DISABLE_RISKY_USER,false,false,,"When true, exempts the target from automatic disablement of risky users",BOOLEAN
+113,EXTERNAL_OAUTH_ADD_PRIVILEGED_ROLES_TO_BLOCKED_LIST,true,true,,"If true, automatically adds the ACCOUNTADMIN and SECURITYADMIN roles the blocked roles set",BOOLEAN
+114,EXTERNAL_VOLUME,,,,Name of an external volume that will be used for persisted Iceberg metadata and data files.,STRING
+115,GEOGRAPHY_OUTPUT_FORMAT,GeoJSON,GeoJSON,,"GEOGRAPHY display format: GeoJSON, WKT, or WKB(case-insensitive)",STRING
+116,GEOMETRY_OUTPUT_FORMAT,GeoJSON,GeoJSON,,"GEOMETRY display format: GeoJSON, WKT, or WKB(case-insensitive)",STRING
+117,GO_QUERY_RESULT_FORMAT,ARROW,ARROW,,Format used to serialize query result to send back to golang driver,STRING
+118,HYBRID_TABLE_LOCK_TIMEOUT,3600,3600,,"Number of seconds to wait while trying to acquire locks, before timing out and
+aborting the statement. A value of 0 turns off lock waiting i.e. the statement
+must acquire the lock immediately or abort.",NUMBER
+119,ICEBERG_VERSION_DEFAULT,2,2,,Default Iceberg version for new managed Iceberg table creation. Overridden by table-level ICEBERG_VERSION property if specified. Note: the default value must be synced with the default value of ICEBERG_VERSION,NUMBER
+120,INCLUDE_DT_WITH_TABLE_KIND_IN_SHOW_OBJECTS,true,true,,"Whether to include dynamic tables, is_dynamic column, table kind in show objects",BOOLEAN
+121,INCLUDE_DYNAMIC_TABLES_WITH_TABLE_KIND,true,true,,"Whether to include dynamic tables, is_dynamic column, table kind in show commands",BOOLEAN
+122,INITIAL_REPLICATION_SIZE_LIMIT_IN_TB,10.0,10.0,,"Soft limit for the size of initial replication operation in terabytes. If set to zero, replication operation is not blocked based on size.",FLOAT
+123,JDBC_FORMAT_DATE_WITH_TIMEZONE,true,true,,"When true, ResultSet#getDate(int columnIndex, Calendar cal) and getDate(String columnName, Calendar cal) will display the date using the Calendar's output.",BOOLEAN
+124,JDBC_QUERY_RESULT_FORMAT,ARROW,ARROW,,Format used to serialize query result to send back to jdbc,STRING
+125,JDBC_TREAT_DECIMAL_AS_INT,true,true,,"When scale is 0, whether to treat Decimal as Int in JDBC",BOOLEAN
+126,JDBC_TREAT_TIMESTAMP_NTZ_AS_UTC,false,false,,"When true, Timestamp_NTZ values are always stored in UTC timezone",BOOLEAN
+127,JDBC_USE_SESSION_TIMEZONE,true,true,,"When true, JDBC driver will not display timezone offset between JVM and session.",BOOLEAN
+128,JSON_INDENT,2,2,,Width of indentation in JSON output (0 for compact),NUMBER
+129,JS_TREAT_INTEGER_AS_BIGINT,false,false,,"If true, the nodejs client will convert all integer columns to bigint type",BOOLEAN
+130,LANGUAGE,en,en,,"The selected language that will be used by UI, GS, Query Coordination and XP. The input languages should be in BCP-47 format. AKA. dash format.See LocaleUtil.java for the details.",STRING
+131,LISTING_AUTO_FULFILLMENT_REPLICATION_REFRESH_SCHEDULE,1440 MINUTE,1440 MINUTE,,Listing auto fulfillment replication refresh schedule for listings that do not have a defined refresh schedule,STRING
+132,LOCK_TIMEOUT,43200,43200,,"Number of seconds to wait while trying to lock a resource, before timing out 
+and aborting the statement. A value of 0 turns off lock waiting i.e. the 
+statement must acquire the lock immediately or abort. If multiple resources 
+need to be locked by the statement, the timeout applies separately to each 
+lock attempt.",NUMBER
+133,LOGIN_IDP_REDIRECT,,,,"Mapping between interfaces and IdP to redirect to when authenticating into a specific Snowflake interface such as Streamlit or Snowflake Intelligence. The format is a JSON object where keys are interface names (e.g., 'SNOWFLAKE_INTELLIGENCE', 'STREAMLIT') and values are IdP names as defined in the SSO integration (e.g., 'Okta', 'AzureAD'). Example: '{""SNOWFLAKE_INTELLIGENCE"": ""Okta"", ""STREAMLIT"": ""AzureAD""}'. This is a parameter that will only be set when LOGIN_IDP_REDIRECT account property is set.",STRING
+134,LOG_EVENT_LEVEL,OFF,OFF,,LOG_EVENT_LEVEL to use when filtering log events,STRING
+135,LOG_LEVEL,OFF,OFF,,LOG_LEVEL to use when filtering events,STRING
+136,MAX_CONCURRENCY_LEVEL,8,8,,Maximum number of SQL statements a warehouse cluster can execute concurrently before queuing them. Small SQL statements count as a fraction of 1.,NUMBER
+137,MAX_DATA_EXTENSION_TIME_IN_DAYS,14,14,,Maximum number of days to extend data retention beyond the retention period to prevent a stream becoming stale.,NUMBER
+138,METRIC_LEVEL,NONE,NONE,,METRIC_LEVEL value to control whether to emit metrics to Event Table,STRING
+139,MIN_DATA_RETENTION_TIME_IN_DAYS,0,0,,Minimum allowable data retention time for an account. The effective retention time for any entity in the account is the max of this value and the DATA_RETENTION_TIME_IN_DAYS value for that entity.,NUMBER
+140,MULTI_STATEMENT_COUNT,1,1,,"Number of statement included in submitted query text.
+This parameter is submitted by user to avoid sql injection.
+Value 1 means one statement, value > 1 means n statement
+can be executed, if not equal to the value will raise the
+exception. Value 0 means any number of statement can be
+ executed",NUMBER
+141,NETWORK_POLICY,,,,Network policy assigned for the given target.,STRING
+142,NOORDER_SEQUENCE_AS_DEFAULT,true,true,,Whether we make NOORDER the default option for creating new sequences,BOOLEAN
+143,OAUTH_ADD_PRIVILEGED_ROLES_TO_BLOCKED_LIST,true,true,,"If true, automatically adds the ACCOUNTADMIN and SECURITYADMIN roles the blocked roles set",BOOLEAN
+144,ODBC_QUERY_RESULT_FORMAT,ARROW,ARROW,SYSTEM,Format used to serialize query result to send back to odbc,STRING
+145,ODBC_SCHEMA_CACHING,false,false,,"When true, enables schema caching in ODBC. This can speed up SQLColumns API calls.",BOOLEAN
+146,ODBC_TREAT_DECIMAL_AS_INT,false,false,,"When scale is 0, whether to treat Decimal as Int in ODBC",BOOLEAN
+147,ODBC_USE_CUSTOM_SQL_DATA_TYPES,false,false,,ODBC return snowflake specific sql data types in result set metadata,BOOLEAN
+148,OPTIMIZE_DATA_LAYOUT,true,true,,Enable writing Iceberg data files with random subpaths in the data directory for an Iceberg table,BOOLEAN
+149,PERIODIC_DATA_REKEYING,false,false,,"If true, Snowflake will re-encrypt data that was encrypted more than a year ago.",BOOLEAN
+150,PIPE_EXECUTION_PAUSED,false,false,,Pause processing of files for a pipe,BOOLEAN
+151,PREVENT_LOAD_FROM_INLINE_URL,false,false,,prevent copy load from inline url (copy into <table> from s3://mybucket/path/f1).,BOOLEAN
+152,PREVENT_UNLOAD_TO_INLINE_URL,false,false,,prevent copy into inline url (copy into s3://mybucket/path/f1).,BOOLEAN
+153,PREVENT_UNLOAD_TO_INTERNAL_STAGES,false,false,,"Prevent unload sensitive data to non-external stages (user stage, table stage, named stage).",BOOLEAN
+154,PYTHON_CONNECTOR_QUERY_RESULT_FORMAT,ARROW,ARROW,,Format used to serialize query result to send back to python connector ,STRING
+155,PYTHON_CONNECTOR_USE_NANOARROW,true,true,,True = Python Connector will use nanoarrow to convert data. False =  client will use vendored pyarrow to convert data.Only affects Python Connector >= 3.3.0,BOOLEAN
+156,PYTHON_PROFILER_MODULES,,,,"A comma separated list of modules to profile in addition to the user code, which is always profiled",STRING
+157,PYTHON_PROFILER_TARGET_STAGE,,,,The fully qualified stage name where the profiler output will be saved.,STRING
+158,PYTHON_SNOWPARK_AUTO_CLEAN_UP_TEMP_TABLE_ENABLED,false,false,,"When True, Snowpark Python client will automatically clean up unused temp tables in the current session. When False, unused temp tables will not be cleaned up until the end of session.",BOOLEAN
+159,PYTHON_SNOWPARK_AUTO_CLEAN_UP_TEMP_TABLE_ENABLED_VERSION,,,,"The minimum Snowpark-Python version required for enabling auto clean up of unused temp tables in the current session. If it's an empty string, this improvment is disabled.",STRING
+160,PYTHON_SNOWPARK_COLLECT_TELEMETRY_AT_CRITICAL_PATH_VERSION,1.28.0,1.28.0,,"The minimum Snowpark Python version required for enabling reporting telemetry for all SnowflakePlans being executed in the client. If it's an empty string, this improvement is disabled.",STRING
+161,PYTHON_SNOWPARK_COMPILATION_STAGE_ENABLED,true,true,,"When True, Snowpark Python client will enable the extra compilation stage that appliesoptimizations like repeated subquery elimination, large query breakdown etc.",BOOLEAN
+162,PYTHON_SNOWPARK_DATAFRAME_JOIN_ALIAS_FIX_VERSION,,,,"The minimum Snowpark-Python version required for resovling conflicting alias. If it's an empty string, this improvment is disabled.",STRING
+163,PYTHON_SNOWPARK_ELIMINATE_NUMERIC_SQL_VALUE_CAST_ENABLED,true,false,SYSTEM,True = Snowpark Python client will try to eliminate the type cast for numeric literals during query generation for binary expression and in expression. False = Snowpark Python client will always add a type cast for numeric literals for query generation.,BOOLEAN
+164,PYTHON_SNOWPARK_ENABLE_THREAD_SAFE_SESSION,true,true,SYSTEM,"When True, Snowpark Python client will use locks and thread local objects to protect updates of session object.",BOOLEAN
+165,PYTHON_SNOWPARK_GENERATE_MULTILINE_QUERIES,true,true,,True = Snowpark Python client will generate multi-line SQL queries. False= Snowpark Python client will not generate multi-line SQL queries.,BOOLEAN
+166,PYTHON_SNOWPARK_LARGE_QUERY_BREAKDOWN_COMPLEXITY_LOWER_BOUND,10000000,10000000,,"Parameter to control the complexity score lower bound used by large query breakdown. When the plan complexity is below this complexity bound, the plan node will not be considered a valid candidate for the optimization.",NUMBER
+167,PYTHON_SNOWPARK_LARGE_QUERY_BREAKDOWN_COMPLEXITY_UPPER_BOUND,12000000,12000000,,"Parameter to control the complexity score upper bound used by large query breakdown. When the plan complexity is above this bound, the plan will be broken down util plan complexity is below is bound, or no valid nodes can be found.",NUMBER
+168,PYTHON_SNOWPARK_REDUCE_DESCRIBE_QUERY_ENABLED,false,false,,True = Snowpark Python client will reduce unnecessary describe queries. False = Snowpark Python client will not reduce unnecessary describe queries.,BOOLEAN
+169,PYTHON_SNOWPARK_REDUCE_DESCRIBE_QUERY_VERSION,,,,"The minimum snowpark-python client version for which the reduce describe query optimization is enabled. If it's an empty string, this improvement is disabled.",STRING
+170,PYTHON_SNOWPARK_USE_CTE_OPTIMIZATION_VERSION,999.999.999,1.31.1,SYSTEM,"The minimum Snowpark-Python version required for enabling cte optimization in the current session. If it's an empty string, this improvment is disabled.",STRING
+171,PYTHON_SNOWPARK_USE_LARGE_QUERY_BREAKDOWN_OPTIMIZATION_VERSION,,,,"The minimum Snowpark-Python version required to use the large query breakdown optimization for breaking down complex snowpark dataframe queries into smaller ones for achieving higher performance. When False, do not breakdown the generated sql queries. If it's an empty string, this improvement is disabled.",STRING
+172,PYTHON_SNOWPARK_USE_LOGICAL_TYPE_FOR_CREATE_DATAFRAME,true,true,,True = Snowpark Python client will use logical type by default in session.create_dataframe to infer timestamp types correctly. False = Snowpark client will fallback to the old behavior. Only affects Python Snowpark version > 1.10.0,BOOLEAN
+173,PYTHON_SNOWPARK_USE_OPTIMIZED_SQL_FEATURES_VERSION,,,,"The minimum Snowpark-Python version required for enabling optimized SQL features in the current session. If it's an empty string, this improvement is disabled.",STRING
+174,PYTHON_SNOWPARK_USE_SCOPED_TEMP_OBJECTS,true,true,,True = Python Snowpark will create job scoped temp objects. False = Snowpark will create session temp objects. Only affects Python Snowpark versions > 0.9.0,BOOLEAN
+175,PYTHON_SNOWPARK_USE_SQL_SIMPLIFIER,true,true,,True = Snowpark Python client will use the SQL simplifier. False = Snowpark Python client will not use SQL simplifier.,BOOLEAN
+176,PYTHON_UDF_PROFILER_MODULES,,,,"A comma separated list of user-imported modules to profile in addition to the handler code in Python UDF, which is always profiled.",STRING
+177,QA_TEST_NAME,,,,Test name if running in QA mode. Used as a diversifier for shared pools,STRING
+178,QUERY_ACCELERATION_MAX_STATEMENT_SCALE_FACTOR,0,0,,"Maximum scale factor per statement for query acceleration. Limits how many QAS workers a single request can use, expressed as a multiple of warehouse size. Value of 0 means no per-statement limit (warehouse-level limit still applies).",NUMBER
+179,QUERY_CLIENT_TAG,,,,String (up to 2000 characters) used to tag and index queries,STRING
+180,QUERY_RESULT_FORMAT,JSON,JSON,,Format used to serialize query result to send back to client ,STRING
+181,QUERY_TAG,,,,String (up to 2000 characters) used to tag statements executed by the session,STRING
+182,QUOTED_IDENTIFIERS_IGNORE_CASE,false,false,,"If true, the case of quoted identifiers is ignored",BOOLEAN
+183,READ_CONSISTENCY_MODE,SESSION,SESSION,,"If set to 'GLOBAL', guarantees that changes from different sessions are immediately visible. This option incurs a slight performance impact.",STRING
+184,READ_LATEST_WRITES,false,false,,"If true, queries that read hybrid tables will always see the latest committed writes",BOOLEAN
+185,REPLACE_INVALID_CHARACTERS,false,false,,Replace invalid UTF-8 characters found in Iceberg table external data files with the Unicode replacement character,BOOLEAN
+186,REPLICATION_AUTO_RESOLVER_MAX_SIZE_LIMIT_IN_TB,10.0,10.0,,"Soft limit for the size of the replication auto-resolver operation in terabytes. If set to zero, replication auto-resolver operation is not blocked based on size.",FLOAT
+187,REQUIRE_STORAGE_INTEGRATION_FOR_STAGE_CREATION,false,false,,"If true, only credential-less stage creations are allowed. Can be set by the customer.",BOOLEAN
+188,REQUIRE_STORAGE_INTEGRATION_FOR_STAGE_OPERATION,false,false,,"If true, only credential-less stages are allowed to be used.  Can be set by the customer.",BOOLEAN
+189,ROWS_PER_RESULTSET,0,0,,maxium number of rows in a result set,NUMBER
+190,ROW_TIMESTAMP_DEFAULT,false,false,,"When set to true, new tables are created with row timestamp enabled.",BOOLEAN
+191,S3_STAGE_VPCE_DNS_NAME,,,,S3 VPCE DNS name to access internal stage bucket over privatelink,STRING
+192,SAML_IDENTITY_PROVIDER,,,,Authentication attributes for the SAML Identity provider,STRING
+193,SEARCH_PATH,"$current, $public","$current, $public",,Search path for unqualified object references.,STRING
+194,SERVERLESS_TASK_MAX_STATEMENT_SIZE,X2Large,X2Large,,The maximum warehouse size to use for a serverless Task,STRING
+195,SERVERLESS_TASK_MIN_STATEMENT_SIZE,XSMALL,XSMALL,,The minimum warehouse size to use for a serverless Task,STRING
+196,SHOW_EXTERNAL_TABLE_KIND_AS_TABLE,true,true,,"Change the way external table KIND info is displayed by SHOW TABLES and SHOW OBJECTS. The KIND column of external tables is displayed as TABLE if true, EXTERNAL_TABLE otherwise.",BOOLEAN
+197,SHOW_TERSE_BY_DEFAULT,false,false,,"When enabled, SHOW commands route to MD Fetch SHOW TERSE implementation. Use SHOW FULL to get all columns.",BOOLEAN
+198,SIMULATED_DATA_SHARING_CONSUMER,,,,Data sharing views will return rows as if executed in the specified consumer account.,STRING
+199,SNOWPARK_HIDE_INTERNAL_ALIAS,true,true,,Display the original column names after automatic aliased by Snowpark client. e.g. Join two dataframes with conflicting column names.,BOOLEAN
+200,SNOWPARK_LAZY_ANALYSIS,true,true,,Enable lazy result schema analysis for Snowpark,BOOLEAN
+201,SNOWPARK_REQUEST_TIMEOUT_IN_SECONDS,86400,86400,,Client side timeout for Snowpark requests in seconds. Currently this parameter only applies to UDF jar (Java/Scala) or zip (Python) file uploading.,NUMBER
+202,SNOWPARK_STORED_PROC_IS_FINAL_TABLE_QUERY,false,false,,"If true, it indicates that the query is the final query of table sproc which is used as the result for the client",BOOLEAN
+203,SNOWPARK_USE_SCOPED_TEMP_OBJECTS,false,true,SYSTEM,True = Snowpark will create job scoped temp objects. False = Snowpark will create session temp objects. Only affects JVM Snowpark versions > 1.5.0,BOOLEAN
+204,SNOWSIGHT_USE_DASHED_CLASSIC_UI_URL,false,false,,Use dashed version of account or alias when constructing classic-ui url,BOOLEAN
+205,SNOWSIGHT_USE_REGIONLESS_CLASSIC_UI_URL,false,false,,Use regionless mode when constructing classic-ui url,BOOLEAN
+206,SQL_API_NULLABLE_IN_RESULT_SET,true,true,,"The result set may include JSON null if true, otherwise it includes string 'null'",BOOLEAN
+207,SQL_API_QUERY_RESULT_FORMAT,JSON,JSON,,The result set will use the format provided with the default of JSON,STRING
+208,SQL_TRACE_QUERY_TEXT,OFF,OFF,,"If set to be 'on', we allow collecting query text in sql tracing",STRING
+209,SSO_LOGIN_PAGE,false,false,,Enable federated authentication for console login and redirects preview page to console login,BOOLEAN
+210,STATEMENT_QUEUED_TIMEOUT_IN_SECONDS,0,0,,Timeout in seconds for queued statements: statements will automatically be canceled if they are queued on a warehouse for longer than this amount of time; disabled if set to zero.,NUMBER
+211,STATEMENT_TIMEOUT_IN_SECONDS,172800,172800,,"Timeout in seconds for statements: statements are automatically canceled if they run for longer; if set to zero, max value (604800) is enforced.",NUMBER
+212,STORAGE_SERIALIZATION_POLICY,OPTIMIZED,OPTIMIZED,,Storage serialization policy used for managed Iceberg table. This include encodings and compressions,STRING
+213,STRICT_JSON_OUTPUT,false,false,,JSON output is strictly compliant to the specification,BOOLEAN
+214,SUSPEND_TASK_AFTER_NUM_FAILURES,10,10,,How many times a task must fail in a row before it is automatically suspended. 0 disables auto-suspending.,NUMBER
+215,TARGET_FILE_SIZE,AUTO,AUTO,,Target file size for iceberg tables.,STRING
+216,TASK_AUTO_RETRY_ATTEMPTS,0,0,,Maximum Automatic Retries Allowed For A User Task,NUMBER
+217,TIMESTAMP_DAY_IS_ALWAYS_24H,false,false,,"If set, arithmetic on days always uses 24 hours per day,
+possibly not preserving the time (due to DST changes)",BOOLEAN
+218,TIMESTAMP_INPUT_FORMAT,AUTO,AUTO,,input format for timestamp,STRING
+219,TIMESTAMP_LTZ_OUTPUT_FORMAT,,,,"Display format for TIMESTAMP_LTZ values. If empty, TIMESTAMP_OUTPUT_FORMAT is used.",STRING
+220,TIMESTAMP_NTZ_OUTPUT_FORMAT,YYYY-MM-DD HH24:MI:SS.FF3,YYYY-MM-DD HH24:MI:SS.FF3,,"Display format for TIMESTAMP_NTZ values. If empty, TIMESTAMP_OUTPUT_FORMAT is used.",STRING
+221,TIMESTAMP_OUTPUT_FORMAT,YYYY-MM-DD HH24:MI:SS.FF3 TZHTZM,YYYY-MM-DD HH24:MI:SS.FF3 TZHTZM,,Default display format for all timestamp types.,STRING
+222,TIMESTAMP_TYPE_MAPPING,TIMESTAMP_NTZ,TIMESTAMP_NTZ,,"If TIMESTAMP type is used, what specific TIMESTAMP* type it should map to:
+  TIMESTAMP_LTZ, TIMESTAMP_NTZ (default) or TIMESTAMP_TZ",STRING
+223,TIMESTAMP_TZ_OUTPUT_FORMAT,,,,"Display format for TIMESTAMP_TZ values. If empty, TIMESTAMP_OUTPUT_FORMAT is used.",STRING
+224,TIMEZONE,America/Los_Angeles,America/Los_Angeles,,time zone,STRING
+225,TIME_INPUT_FORMAT,AUTO,AUTO,,input format for time,STRING
+226,TIME_OUTPUT_FORMAT,HH24:MI:SS,HH24:MI:SS,,display format for time,STRING
+227,TRACE_LEVEL,OFF,OFF,,Trace level value to use when generating/filtering trace events,STRING
+228,TRANSACTION_ABORT_ON_ERROR,false,false,,"If this parameter is true, and a statement issued within a non-autocommit
+transaction returns with an error, then the non-autocommit transaction is
+aborted. All statements issued inside that transaction will fail until an
+commit or rollback statement is executed to close that transaction.",BOOLEAN
+229,TRANSACTION_DEFAULT_ISOLATION_LEVEL,READ COMMITTED,READ COMMITTED,,"The default isolation level when starting a starting a transaction, when no
+isolation level was specified",STRING
+230,TWO_DIGIT_CENTURY_START,1970,1970,,"For 2-digit dates, defines a century-start year.
+For example, when set to 1980:
+  - parsing a string '79' will produce 2079
+  - parsing a string '80' will produce 1980",NUMBER
+231,UI_FORCE_S3_REGIONAL_DOTTED_ENDPOINTS,false,false,,UI param to force resolving to S3 dotted regional endpoints,BOOLEAN
+232,UI_NOTIFICATIONS,false,false,,Whether UI notifications are shown in the UI,BOOLEAN
+233,UI_QUERY_RESULT_FORMAT,JSON,JSON,,Format used to serialize query result to send back to python connector ,STRING
+234,UNLOAD_PARQUET_TIME_TIMESTAMP_MILLIS,true,true,,"Enable this parameter to always unload parquet time and timestamp in milliseconds scale, which are TIME_MILLIS and TIMESTAMP_MILLIS",BOOLEAN
+235,UNSUPPORTED_DDL_ACTION,ignore,ignore,,The action to take upon encountering an unsupported ddl statement,STRING
+236,USER_TASK_MANAGED_INITIAL_WAREHOUSE_SIZE,Medium,Medium,,The initial size of warehouse to use for managed warehouses in the absence of history,STRING
+237,USER_TASK_MINIMUM_TRIGGER_INTERVAL_IN_SECONDS,30,30,,Minimum amount of time between Triggered Task executions in seconds,NUMBER
+238,USER_TASK_TIMEOUT_MS,3600000,3600000,,User task execution timeout in milliseconds,NUMBER
+239,USE_CACHED_RESULT,true,true,,"If enabled, query results can be reused between successive invocations of the same query as long as the original result has not expired",BOOLEAN
+240,USE_WORKSPACES_FOR_SQL,unset,unset,,Set Workspaces as the default SQL editor,STRING
+241,WEEK_OF_YEAR_POLICY,0,0,,"Defines the policy of assigning weeks to years:
+0: the week needs to have 4 days in a given year;
+1: a week with January 1st always belongs to a given year.",NUMBER
+242,WEEK_START,0,0,,"Defines the first day of the week:
+0: legacy Snowflake behavior; 1: Monday .. 7: Sunday.",NUMBER
+243,WORKSPACE_USER_SETTINGS,{},{},,Workspace user settings,STRING
