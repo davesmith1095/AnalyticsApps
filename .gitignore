@@ -2,6 +2,7 @@
 ## Add any file extensions or specific files to ignore from github here
 
 Data/
+Results/
 data/
 logs/
 docs/
