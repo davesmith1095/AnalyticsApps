@@ -1,0 +1,11 @@
+pandas>=1.3.0
+geopandas>=0.12.0
+geopy>=2.2.0
+numpy>=1.21.0
+matplotlib>=3.4.0
+
+# Optional dependencies for Geopandas spatial operations (often installed automatically)
+# pyproj>=3.0.0
+# shapely>=1.8.0
+# fiona>=1.8.0
+# rtree>=0.9.7
