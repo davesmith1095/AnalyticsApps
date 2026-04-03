@@ -6,7 +6,7 @@ from src.preprocessor import clean_election_data, clean_census_data
 # --- NEW GEOSPATIAL IMPORTS ---
 from src.geo_loader import GeoLoader
 from src.geo_processor import geocode_polling_locations, process_spatial_join
-from src.visualizer import generate_regional_density_map, generate_commute_bar_chart
+from src.geo_visualizer import generate_regional_density_map, generate_commute_bar_chart
 
 # Configuration
 RAW_DIR = "data/raw/"
