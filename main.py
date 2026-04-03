@@ -3,6 +3,7 @@ import os
 import logging
 import time
 
+## Imports from helper modules
 from src.data_loader import DataLoader
 from src.preprocessor import clean_election_data, clean_census_data
 from src.geo_loader import GeoLoader
@@ -15,6 +16,8 @@ PROCESSED_DIR = "data/processed/"
 GEO_RAW_DIR = "data/geo/raw/"
 GEO_PROCESSED_DIR = "data/geo/processed/"
 LOG_DIR = "logs/"
+# Caching file for geocoded polling locations to avoid re-running the 40-minute geocoding process every time
+GEOCODED_CACHE_FILE = "data/geo/processed/mo_polling_geocoded_cache.geojson"
 
 def setup_logging():
     """Configures logging to write to both a file and keep the console clean."""
@@ -93,21 +96,45 @@ def main():
         print("  - Saved stg_polling_locations.csv")
         logging.info("Successfully staged tabular polling locations.")
 
-    # --- 5. Geospatial Pipeline ---
+    return ## Killswitch to temporarily check the first half of the pipeline before running the geospatial section, which takes much longer to execute. Remove this return statement to run the full pipeline.
+
+# --- 5. Geospatial Pipeline ---
     # Geocodes the physical polling addresses into coordinates and maps them against yearly precinct boundaries to calculate spatial density and coverage areas.
     print("\n" + "="*40)
     print("STARTING GEOSPATIAL PIPELINE")
     print("="*40)
-    logging.info("Starting Geospatial Pipeline. (Note: Geocoding may take significant time).")
+    logging.info("Starting Geospatial Pipeline.")
     
     geo_loader = GeoLoader(geo_raw_dir=GEO_RAW_DIR)
 
     if df_polling is not None:
-        print("Geocoding polling locations... (This may take a moment)")
-        geo_start = time.time()
-        polling_gdf = geocode_polling_locations(df_polling)
-        logging.info(f"Geocoding completed in {time.time() - geo_start:.2f} seconds.")
+        
+        # --- THE CACHE CHECK ---
+        if os.path.exists(GEOCODED_CACHE_FILE):
+            print(f"✅ Cache found! Loading existing geocoded data from {GEOCODED_CACHE_FILE}...")
+            logging.info("Geocoded cache found. Skipping geocoding process.")
+            # Load the cached file instantly
+            polling_gdf = gpd.read_file(GEOCODED_CACHE_FILE)
+        
+        else:
+            print("⚠️ No cache found. Starting the 40-minute geocoding process...")
+            logging.info("No cache found. Starting geocoding process. (This will take significant time).")
+            
+            # Start the timer!
+            geo_start = time.time()
+            
+            # Run the heavy geocoder
+            polling_gdf = geocode_polling_locations(df_polling)
+            
+            # Log the completion time
+            logging.info(f"Geocoding completed in {time.time() - geo_start:.2f} seconds.")
+            
+            # Save the result so you never have to wait 40 minutes again!
+            print(f"💾 Saving geocoded data to cache: {GEOCODED_CACHE_FILE}")
+            polling_gdf.to_file(GEOCODED_CACHE_FILE, driver="GeoJSON")
+            logging.info("Geocoded data successfully cached.")
 
+        # --- THE SPATIAL JOIN LOOP ---
         for year in [2016, 2020, 2024]:
             print(f"\nProcessing spatial data for {year}...")
             logging.info(f"Processing spatial joins for year {year}...")
