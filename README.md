@@ -12,23 +12,26 @@ To prevent merge conflicts and keep our work organized, please adhere to the fol
 **Critical Note:** The `data/` folder is explicitly included in our `.gitignore`. Git is meant for versioning code, not large datasets. Please do not force-push data files to this repository.
 
 ```text
-mo-election-analysis/
-├── .gitignore
+.
+├── main.py
 ├── README.md
-├── data/                           # GITIGNORED (Do not push to GitHub)
-│   ├── raw/                        # Extract the Canvas data zip here
-│   └── processed/                  # Store cleaned dataframe outputs here
-│   └── geo                         # Geospatial data subfolder
-│        ├── raw/                        # Extract GEO Canvas data zips here
-│        └── processed/                  # Store cleaned geodataframe outputs here
-├── notebooks/
-│   ├── Group 1 Final Project - MO Voter.ipynb   # Initial Data Cleaning and EDA
-│   ├── ge.ipynb                                 # Initial geospatial data compliation, cleanup, review
-│   ├── geoeda2.ipynb                            # Geospatial analysis 
-│   └── ??TBD                                    # Combined Geospatial data/viz
-├── src/                            # Reusable Python scripts and helper functions
-└── docs/
-    └── Group1_ProjectProposal.docx
+├── data/
+│   ├── geo/
+│   │   ├── processed/                          # transformed / joined geospatial files
+│   │   └── raw/                                # direct ingested shapefiles
+│   │       ├── mo_2010_county/                 # Missouri County boundary 2010
+│   │       ├── mo_2020_county/                 # Missouri County boundary 2020
+│   │       ├── mo_2024_gen_all_prec/           # 2024 Voter Precinct Shapefiles
+│   │       ├── mo_2024_gen_cong_prec/
+│   │       └── mo_2024_gen_sldl_prec/
+│   ├── processed/                              # Processed Census data
+│   └── raw/                                    # Raw ingested tabular data -- Census, Voter, Polling
+├── docs/
+├── logs/
+├── notebooks/                                  # "Sandbox" for pre-pythonic development
+├── scratch/                                    # Python files not yet incorporated to main.py
+└── src/                                        # Python modules/helper files
+```
 
 
 ## Getting Started: Data Access
