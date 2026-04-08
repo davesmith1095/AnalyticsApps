@@ -1,11 +1,12 @@
 import pandas as pd
+import geopandas as gpd
 import os
 import logging
 import time
 
 ## Imports from helper modules
 from src.data_loader import DataLoader
-from src.preprocessor import clean_election_data, clean_census_data
+from src.preprocessor import clean_election_data, clean_census_data, clean_polling_data
 from src.geo_loader import GeoLoader
 from src.geo_processor import geocode_polling_locations, process_spatial_join
 from src.geo_visualizer import generate_regional_density_map, generate_commute_bar_chart
@@ -90,8 +91,10 @@ def main():
     # Ingests the 2020 polling location addresses and prepares them for both tabular analysis and geospatial geocoding.
     print("\nStaging Polling Locations...")
     logging.info("Starting Tabular Polling Location Processing.")
-    df_polling = loader.load_polling_locations()
-    if df_polling is not None:
+    df_polling_raw = loader.load_polling_locations()
+    df_polling = None
+    if df_polling_raw is not None:
+        df_polling = clean_polling_data(df_polling_raw)
         df_polling.to_csv(os.path.join(PROCESSED_DIR, "stg_polling_locations.csv"), index=False)
         print("  - Saved stg_polling_locations.csv")
         logging.info("Successfully staged tabular polling locations.")

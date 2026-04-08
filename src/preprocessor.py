@@ -154,6 +154,29 @@ def _clean_census_commute(df):
     cols = ['census_year', 'county_fips', 'county_name', 'county_clean', 'total_workers', 'pct_no_vehicle']
     return df[[c for c in cols if c in df.columns]].reset_index(drop=True)
 
+# ==========================================
+# POLLING LOCATION PREPROCESSING
+# ==========================================
+
+def clean_polling_data(df):
+    """
+    Applies preprocessing steps to polling location data (Section 5 of Notebook).
+    Adds normalized county/precinct keys and strips the address for geocoding.
+    """
+    df = df.copy()
+
+    if 'county_name' in df.columns:
+        df['county_clean'] = df['county_name'].str.strip().str.upper()
+
+    if 'precinct_name' in df.columns:
+        df['precinct_clean'] = df['precinct_name'].apply(normalize_precinct_name)
+
+    if 'address' in df.columns:
+        df['polling_address'] = df['address'].str.strip()
+
+    return df.reset_index(drop=True)
+
+
 def _clean_census_sex_age(df):
     for col in df.columns:
         if col.startswith('B01001'):
