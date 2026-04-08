@@ -8,7 +8,7 @@ import time
 from src.data_loader import DataLoader
 from src.preprocessor import clean_election_data, clean_census_data, clean_polling_data
 from src.geo_loader import GeoLoader
-from src.geo_processor import geocode_polling_locations, process_spatial_join
+from src.geo_processor import geocode_polling_locations, calculate_spatial_density
 from src.geo_visualizer import generate_regional_density_map, generate_commute_bar_chart
 
 # Configuration
@@ -144,7 +144,7 @@ def main():
             precinct_shapefile = geo_loader.get_precinct_shapefile(year)
 
             if precinct_shapefile is not None:
-                yearly_density_gdf = process_spatial_join(precinct_shapefile, polling_gdf)
+                yearly_density_gdf = calculate_spatial_density(precinct_shapefile, polling_gdf)
 
                 geo_output = os.path.join(GEO_PROCESSED_DIR, f"mo_density_{year}.geojson")
                 yearly_density_gdf.to_file(geo_output, driver="GeoJSON")
