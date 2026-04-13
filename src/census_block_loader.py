@@ -13,12 +13,25 @@ Get a free key at: https://api.census.gov/data/key_signup.html
 
 import os
 import io
+import time
 import zipfile
 import logging
 import requests
 import pandas as pd
 import geopandas as gpd
 from pathlib import Path
+
+# Shared headers for all Census API requests.
+# Some government APIs silently drop connections from clients with no User-Agent.
+_CENSUS_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (compatible; AnalyticsApps/1.0; Census data research)"
+}
+
+# Seconds to wait between county-level block queries to avoid rate limiting.
+_INTER_QUERY_SLEEP = 0.5
+
+# Request timeouts: (connect_timeout_seconds, read_timeout_seconds)
+_REQUEST_TIMEOUT = (10, 60)
 
 # Missouri's FIPS state code
 MO_STATE_FIPS = "29"
@@ -149,36 +162,110 @@ class CensusBlockLoader:
 
         return self._build_geoid(df)
 
+    def _get_with_retry(self, url, params, max_retries=2, backoff=2.0):
+        """
+        Wraps requests.get with simple retry logic for transient Census API errors.
+
+        Retries on ConnectionError or HTTP 5xx responses. Raises on the final
+        attempt so the caller still sees the error if all retries are exhausted.
+        """
+        last_exc = None
+        for attempt in range(max_retries + 1):
+            try:
+                resp = requests.get(
+                    url,
+                    params=params,
+                    headers=_CENSUS_HEADERS,
+                    timeout=_REQUEST_TIMEOUT,
+                )
+                resp.raise_for_status()
+                return resp.json()
+            except (requests.ConnectionError, requests.Timeout) as exc:
+                last_exc = exc
+                if attempt < max_retries:
+                    wait = backoff * (attempt + 1)
+                    logging.warning(
+                        f"    Request failed ({exc}), retrying in {wait}s "
+                        f"(attempt {attempt+1}/{max_retries})..."
+                    )
+                    time.sleep(wait)
+            except requests.HTTPError as exc:
+                # Only retry on server-side errors (5xx); propagate client errors (4xx)
+                if exc.response is not None and exc.response.status_code < 500:
+                    raise
+                last_exc = exc
+                if attempt < max_retries:
+                    wait = backoff * (attempt + 1)
+                    logging.warning(
+                        f"    HTTP {exc.response.status_code}, retrying in {wait}s..."
+                    )
+                    time.sleep(wait)
+        raise last_exc
+
     def _query_census_api(self):
         """
-        Queries the 2020 Decennial Census PL 94-171 API for all Missouri blocks.
+        Queries the 2020 Decennial Census PL 94-171 API for all Missouri blocks
+        using the Census Bureau REST API directly via requests.
+
+        The `census` Python package does not support block-level PL queries —
+        its state_county_blockgroup method returns block GROUP data (too coarse).
+        We need individual blocks, so we call the API directly.
+
         Iterates by county to avoid API timeouts on large state-wide queries.
+
+        Census API docs: https://api.census.gov/data/2020/dec/pl/variables.html
         """
-        from census import Census          # pip install census
-        client = Census(self.census_api_key, year=2020)
+        BASE_URL = "https://api.census.gov/data/2020/dec/pl"
+        vars_to_get = ",".join(CENSUS_BLOCK_VARS.keys())
 
-        # Get list of Missouri county FIPS codes to iterate over
-        counties = client.pl.state_county(
-            fields=["NAME"],
-            state_fips=MO_STATE_FIPS,
-            county_fips="*"
+        # Step 1: Get the list of Missouri county FIPS codes from the API
+        logging.info("Fetching Missouri county FIPS list from Census API...")
+        county_resp = requests.get(
+            BASE_URL,
+            params={
+                "get": "NAME",
+                "for": "county:*",
+                "in": f"state:{MO_STATE_FIPS}",
+                "key": self.census_api_key,
+            },
+            headers=_CENSUS_HEADERS,
+            timeout=_REQUEST_TIMEOUT,
         )
-        county_fips_list = [c["county"] for c in counties]
+        county_resp.raise_for_status()
+        county_data = county_resp.json()
+        # Response format: first row = headers, subsequent rows = data
+        # Headers: ['NAME', 'state', 'county']
+        county_fips_list = [row[2] for row in county_data[1:]]
+        logging.info(f"Found {len(county_fips_list)} Missouri counties to query.")
 
-        # Variables to pull: rename keys to human-readable names
-        vars_to_get = list(CENSUS_BLOCK_VARS.keys()) + ["GEO_ID"]
+        # Step 2: Query block-level population for each county
         all_rows = []
+        headers = None
 
-        for county_fips in county_fips_list:
-            rows = client.pl.state_county_blockgroup(
-                fields=vars_to_get,
-                state_fips=MO_STATE_FIPS,
-                county_fips=county_fips,
-                blockgroup_fips="*"
+        for i, county_fips in enumerate(county_fips_list):
+            logging.info(
+                f"  Querying county {county_fips} ({i+1}/{len(county_fips_list)})..."
             )
-            all_rows.extend(rows)
+            data = self._get_with_retry(
+                BASE_URL,
+                params={
+                    "get": vars_to_get,
+                    "for": "block:*",
+                    "in": f"state:{MO_STATE_FIPS} county:{county_fips}",
+                    "key": self.census_api_key,
+                },
+            )
 
-        df = pd.DataFrame(all_rows)
+            # Capture headers from first county only; they're identical for all
+            if headers is None:
+                headers = data[0]
+
+            all_rows.extend(data[1:])
+
+            # Pause between requests to stay within the Census API rate limit
+            time.sleep(_INTER_QUERY_SLEEP)
+
+        df = pd.DataFrame(all_rows, columns=headers)
 
         # Rename Census variable codes to human-readable column names
         df = df.rename(columns=CENSUS_BLOCK_VARS)
@@ -200,6 +287,7 @@ class CensusBlockLoader:
             return df
 
         # Pad each component to its standard width
+        # GEOID20 = 2-digit state + 3-digit county + 6-digit tract + 4-digit block = 15 digits
         df["GEOID20"] = (
             df["state"].str.zfill(2)
             + df["county"].str.zfill(3)
