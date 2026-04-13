@@ -41,10 +41,3 @@ Because our raw data files (Shapefiles, Census CSVs) are too large for GitHub, w
 2. Download the compressed raw data folder (`raw.zip`).
 3. On your local machine, extract the contents of the zip file directly into the `mo-election-analysis/data/raw/` directory.
 4. Run `notebooks/Group 1 Final Project - MO Voter.ipynb` to verify your local paths are working!
-
-## Next Steps: Team Meeting Agenda
-Our next major deliverable is the Retrospective Data Analysis. During our next meeting, we need to finalize the following:
-
-1. **Metric Selection:** We must identify, define, and justify 3–5 key metrics that directly address our problem statement (e.g., Voters per Polling Location, Average Commute Time).
-2. **Assigning EDA Notebooks:** We will divide the exploratory analysis (trends, distributions, segments) among the team. Each person will get their own notebook to avoid merge conflicts.
-3. **The Golden Rule:** As we build our EDA, remember the rubric rule: If a trend or distribution doesn't directly support one of our key metrics, exclude it.
