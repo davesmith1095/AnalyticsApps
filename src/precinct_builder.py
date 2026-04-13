@@ -465,8 +465,15 @@ def build_precinct_features(vest_gdf, blocks_gdf, acs_staging_dfs,
             logging.warning(f"No ACS data for category '{category}', year {year}. Skipping.")
             continue
 
-        # Normalise county key to match VEST county column
-        if "county_clean" in acs_year_df.columns and county_col != "county_clean":
+        # Normalise county key to match VEST county column (e.g. COUNTYFP = "001")
+        # ACS staging files carry county_fips as a 5-digit integer (e.g. 29001).
+        # Extract the last 3 digits to match the 3-digit VEST COUNTYFP values.
+        acs_year_df = acs_year_df.copy()
+        if "county_fips" in acs_year_df.columns:
+            acs_year_df[county_col] = (
+                acs_year_df["county_fips"].astype(str).str.zfill(5).str[-3:]
+            )
+        elif "county_clean" in acs_year_df.columns and county_col != "county_clean":
             acs_year_df = acs_year_df.rename(columns={"county_clean": county_col})
 
         features_df = apportion_acs_to_precincts(
