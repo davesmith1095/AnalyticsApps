@@ -277,7 +277,8 @@ def apportion_acs_to_precincts(precinct_df, acs_df, precinct_id_col,
     """
     if acs_feature_cols is None:
         key_cols = {precinct_id_col, county_col, "census_year",
-                    "county_fips", "county_name", "GEO_ID"}
+                    "county_fips", "county_name", "GEO_ID",
+                    "total_population", "voting_age_population"}
         acs_feature_cols = [
             c for c in acs_df.select_dtypes(include="number").columns
             if c not in key_cols
