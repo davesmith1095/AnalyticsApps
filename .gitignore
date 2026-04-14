@@ -7,4 +7,5 @@ data/
 logs/
 docs/
 .DS_Store
+SESSION_CONTEXT.md
 
