@@ -180,10 +180,13 @@ def extract_vest_vote_totals(vest_gdf, year, precinct_id_col):
 
     logging.info(f"  Found {len(pre_cols)} presidential candidate columns for {year}.")
 
-    # Identify Republican and Democrat columns by party code (4th character)
-    rep_cols   = [c for c in pre_cols if c[4] == "R"]
-    dem_cols   = [c for c in pre_cols if c[4] == "D"]
-    other_cols = [c for c in pre_cols if c[4] not in ("R", "D")]
+    # Identify Republican and Democrat columns by party code (position 6).
+    # VEST column format: G{YY}PRE{PARTY}{CANDIDATE}
+    # e.g. G20PRERTRU → positions: G(0) 2(1) 0(2) P(3) R(4) E(5) R(6) T(7) R(8) U(9)
+    # Position 4 is always "R" (part of "PRE") — party code is at position 6.
+    rep_cols   = [c for c in pre_cols if len(c) > 6 and c[6] == "R"]
+    dem_cols   = [c for c in pre_cols if len(c) > 6 and c[6] == "D"]
+    other_cols = [c for c in pre_cols if len(c) > 6 and c[6] not in ("R", "D")]
 
     votes = vest_gdf[[precinct_id_col]].copy()
 
