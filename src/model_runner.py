@@ -49,13 +49,15 @@ ELECTION_YEARS = [2016, 2020, 2024]
 
 # Feature columns present in all three GeoPackages.
 # pct_white excluded — near-perfect collinearity with pct_minority.
+# Population / density excluded — covered by the geospatial pipeline separately.
+# Model intentionally uses only demographic characteristics so that priority_proba
+# reflects demographic underperformance rather than the urban/rural divide.
 FEATURE_COLS = [
     "pct_minority",
     "median_household_income",
     "pct_bachelors_plus",
     "pct_no_vehicle",
     "pct_voting_age",
-    "apportioned_population",
 ]
 
 REGRESSION_TARGET    = "turnout_pct"
@@ -122,9 +124,11 @@ def engineer_features(gdf):
     Adds derived columns used as the classification target and output metric:
 
     - low_turnout_flag  : 1 if turnout_pct < LOW_TURNOUT_THRESHOLD, else 0
+                          Used as the classifier training label.
     - uncasted_votes    : apportioned_vap × (1 − turnout_pct / 100)
                           Measures the raw number of eligible voters who did
-                          not turn out — used to prioritize within flagged set.
+                          not turn out — combined with priority_proba in
+                          build_predictions() to produce the need_score.
 
     Parameters
     ----------
@@ -137,10 +141,12 @@ def engineer_features(gdf):
     """
     gdf = gdf.copy()
 
+    # --- Classification target ---
     gdf[CLASSIFICATION_TARGET] = (
         gdf[REGRESSION_TARGET] < LOW_TURNOUT_THRESHOLD
     ).astype(int)
 
+    # --- Uncasted votes ---
     if "apportioned_vap" in gdf.columns:
         gdf["uncasted_votes"] = (
             gdf["apportioned_vap"] * (1 - gdf[REGRESSION_TARGET] / 100)
@@ -267,7 +273,11 @@ def run_temporal_cv(X, y_reg, y_cls, meta):
         reg_metrics["rmse"].append(mean_squared_error(yr_te, reg_pred) ** 0.5)
 
         # --- Classifier ---
-        rf_cls = RandomForestClassifier(n_estimators=200, random_state=42, n_jobs=-1)
+        # class_weight='balanced' upweights the minority class (high-priority
+        # precincts, ~7% of data) to prioritize recall over precision — appropriate
+        # since output drives human review rather than automated action.
+        rf_cls = RandomForestClassifier(n_estimators=200, random_state=42,
+                                        class_weight="balanced", n_jobs=-1)
         rf_cls.fit(X_tr, yc_tr)
         cls_pred  = rf_cls.predict(X_te)
         cls_proba = rf_cls.predict_proba(X_te)[:, 1]
@@ -317,7 +327,8 @@ def train_final_models(X, y_reg, y_cls):
     rf_reg = RandomForestRegressor(n_estimators=200, random_state=42, n_jobs=-1)
     rf_reg.fit(X, y_reg)
 
-    rf_cls = RandomForestClassifier(n_estimators=200, random_state=42, n_jobs=-1)
+    rf_cls = RandomForestClassifier(n_estimators=200, random_state=42,
+                                    class_weight="balanced", n_jobs=-1)
     rf_cls.fit(X, y_cls)
 
     lr_reg = Pipeline([("scaler", StandardScaler()), ("lr", LinearRegression())])
@@ -372,6 +383,14 @@ def build_predictions(rf_reg, rf_cls, X_2024, meta_2024):
         out["predicted_uncasted_votes"] = (
             out["apportioned_vap"] * (1 - pred_turnout / 100)
         ).round(0)
+
+        # need_score combines the model's demographic underperformance signal
+        # (priority_proba) with the magnitude of potential impact (predicted
+        # uncasted votes). Precincts that rank highly on both dimensions are
+        # the strongest candidates for resource allocation.
+        out["need_score"] = (
+            out["priority_proba"] * out["predicted_uncasted_votes"]
+        ).round(2)
 
     return gpd.GeoDataFrame(out, geometry="geometry", crs=meta_2024.crs)
 
@@ -545,6 +564,23 @@ def run_model(geo_output_dir, processed_dir):
     print(f"  2024 precincts scored : {len(predictions_gdf):,}")
     print(f"  Flagged high-priority : {n_flagged:,}  "
           f"({n_flagged / len(predictions_gdf) * 100:.1f}%)")
+
+    if "need_score" in predictions_gdf.columns:
+        top10 = (
+            predictions_gdf[["composite_prec_id", "priority_proba",
+                              "predicted_uncasted_votes", "need_score"]]
+            .sort_values("need_score", ascending=False)
+            .head(10)
+            .reset_index(drop=True)
+        )
+        print("\n  Top 10 precincts by need_score (proba × predicted uncasted votes):")
+        print(f"  {'Precinct':<35} {'Proba':>7} {'Uncasted':>10} {'NeedScore':>10}")
+        print(f"  {'-' * 65}")
+        for _, row in top10.iterrows():
+            print(f"  {str(row['composite_prec_id']):<35} "
+                  f"{row['priority_proba']:>7.4f} "
+                  f"{row['predicted_uncasted_votes']:>10,.0f} "
+                  f"{row['need_score']:>10,.2f}")
 
     # 7. Feature importance
     _print_feature_importance(rf_reg, rf_cls)
